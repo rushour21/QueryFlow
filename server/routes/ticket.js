@@ -1,0 +1,180 @@
+import express from "express";
+import Tickets from "../modals/tickets";
+import { errorLogger } from "../middleware/log.js";
+import ChatbotStyle from "../modals/chatbotStyle.js";
+import dotenv from "dotenv";
+import { authMiddleware } from "../middleware/auth.js";
+import tickets from "../modals/tickets";
+dotenv.config();
+const router = express.Router();
+
+router.post("/create", async (req, res) => {
+    try {
+        console.log(req.body)
+        const { name, phone, email, initialMessage} = req.body
+        if (!name || !phone || !email) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+        const newTicket = new Tickets({
+           userDetails: {
+                name: name,
+                phone: phone,
+                email: email,
+            },
+            Messages: [{
+                sender: "user",
+                text: initialMessage,
+                timestamp: new Date(),
+            }],
+            status: "pending",
+        });
+        await newTicket.save();
+        return res.status(201).json({ message: "Ticket created successfully", ticket: newTicket._id });
+    } catch (error) {
+        console.error("Error creating ticket:", error);
+        return res.status(500).json({ message: "Internal server error" });
+
+    }
+})
+
+router.put("/update/:ticketId", async (req, res) => {
+    try {
+        const { ticketId } = req.params;
+        const { message } = req.body;
+        if (!message) {
+            return res.status(400).json({ message: "Message is required" });
+        }
+        const ticket = await Tickets.findById(ticketId);
+        if (!ticket) {
+            return res.status(404).json({ message: "Ticket not found" });
+        }
+        ticket.messages.push({
+            sender: "admin",
+            text: message,
+            timestamp: new Date(),
+        });
+        await ticket.save();
+        return res.status(200).json({ message: "Ticket updated successfully", ticket });
+    } catch (error) {
+        console.error("Error updating ticket:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+})
+
+router.post("/style", async (req, res) => {
+    try {
+        const { 
+            headerColor,
+            backgroundColor,
+            customizedText,
+            introFields,
+            welcomeText,
+            chatTimer,
+            } = req.body;
+        exististingStyle = await ChatbotStyle.findOne({});
+        if (exististingStyle) {
+            exististingStyle.headerColor = headerColor;
+            exististingStyle.backgroundColor = backgroundColor;
+            exististingStyle.customizedText = customizedText;
+            exististingStyle.introFields = introFields;
+            exististingStyle.welcomeText = welcomeText;
+            exististingStyle.chatTimer = chatTimer;
+            await exististingStyle.save();
+        } else {
+            const newStyle = new ChatbotStyle({
+                headerColor,
+                backgroundColor,
+                customizedText,
+                introFields,
+                welcomeText,
+                chatTimer,
+            });
+            await newStyle.save();
+        }
+        
+       res.status(201).json({ message: "Style created/updated successfully" });
+    } catch (error) {
+        console.error("Error creating style:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+})
+
+router.get("/allTickets", authMiddleware, errorLogger, async (req, res) => {
+    try {
+        const allTickets = await Tickets.find({})
+            .select("userDetails createdBy createdAt ticketNo status messages")
+
+        // If you only want the **first message**, map through and pick it
+        const simplified = allTickets.map(ticket => ({
+            userDetails: ticket.userDetails,
+            createdBy: ticket.createdBy,
+            createdAt: ticket.createdAt,
+            ticketNo: ticket.ticketNo,
+            status: ticket.status,
+            firstMessage: ticket.messages?.[0] || null
+        }));
+
+        return res.status(200).json({ tickets: simplified });
+    } catch (error) {
+        console.error("Error fetching tickets:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+router.get("/resolved", authMiddleware, errorLogger, async (req, res) => {
+    try {
+        const allTickets = await Tickets.find({ status: "Resolved" })
+            .select("userDetails createdBy createdAt ticketNo status messages");
+
+        // If you only want the **first message**, map through and pick it
+        const simplified = allTickets.map(ticket => ({
+            userDetails: ticket.userDetails,
+            createdBy: ticket.createdBy,
+            createdAt: ticket.createdAt,
+            ticketNo: ticket.ticketNo,
+            status: ticket.status,
+            firstMessage: ticket.messages?.[0] || null
+        }));
+
+        return res.status(200).json({ tickets: simplified });
+    } catch (error) {
+        console.error("Error fetching tickets:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+router.get("/unresolved", authMiddleware, errorLogger, async (req, res) => {
+    try {
+        const allTickets = await Tickets.find({ status: "Unresolved" })
+            .select("userDetails createdBy createdAt ticketNo status messages");
+
+        // If you only want the **first message**, map through and pick it
+        const simplified = allTickets.map(ticket => ({
+            userDetails: ticket.userDetails,
+            createdBy: ticket.createdBy,
+            createdAt: ticket.createdAt,
+            ticketNo: ticket.ticketNo,
+            status: ticket.status,
+            firstMessage: ticket.messages?.[0] || null
+        }));
+
+        return res.status(200).json({ tickets: simplified });
+    } catch (error) {
+        console.error("Error fetching tickets:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+router.get("/allchats", authMiddleware, errorLogger, async (req, res) => {
+    try {
+        const allChats = await Tickets.find({});
+        
+        return res.status(200).json({ chats: allChats });
+    } catch (error) {
+        
+        console.error("Error fetching chats:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+})
+
+export default router
