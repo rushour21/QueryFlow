@@ -9,43 +9,47 @@ const router = express.Router();
 
 router.post("/style", async (req, res) => {
     try {
-        const { 
+          const {
             headerColor,
             backgroundColor,
             customizedText,
             introFields,
             welcomeText,
             chatTimer,
-            } = req.body;
-        exististingStyle = await ChatbotStyle.findOne({});
-        if (exististingStyle) {
-            exististingStyle.headerColor = headerColor;
-            exististingStyle.backgroundColor = backgroundColor;
-            exististingStyle.customizedText = customizedText;
-            exististingStyle.introFields = introFields;
-            exististingStyle.welcomeText = welcomeText;
-            exististingStyle.chatTimer = chatTimer;
-            await exististingStyle.save();
-        } else {
+          } = req.body;
+          
+          const existingStyle = await ChatbotStyle.findOne({});
+          
+          if (existingStyle) {
+            existingStyle.headerColor = headerColor;
+            existingStyle.backgroundColor = backgroundColor;
+            existingStyle.customizedText = customizedText;
+            existingStyle.introFields = introFields;
+            existingStyle.welcomeText = welcomeText;
+            existingStyle.chatTimer = chatTimer;
+            
+            await existingStyle.save();
+          } else {
             const newStyle = new ChatbotStyle({
-                headerColor,
-                backgroundColor,
-                customizedText,
-                introFields,
-                welcomeText,
-                chatTimer,
+              headerColor,
+              backgroundColor,
+              customizedText,
+              introFields,
+              welcomeText,
+              chatTimer,
             });
+            
             await newStyle.save();
+          }
+          
+          res.status(201).json({ message: "Style created/updated successfully" });
+        } catch (error) {
+          console.error("Error creating style:", error);
+          return res.status(500).json({ message: "Internal server error" });
         }
-        
-       res.status(201).json({ message: "Style created/updated successfully" });
-    } catch (error) {
-        console.error("Error creating style:", error);
-        return res.status(500).json({ message: "Internal server error" });
-    }
 })
 
-router.get("/style", async (req, res) => {
+router.get("/getstyle", async (req, res) => {
     try {
         const style = await ChatbotStyle.findOne({});
         if (!style) {

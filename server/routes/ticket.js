@@ -85,44 +85,6 @@ router.put("/adminmessage/:ticketId", async (req, res) => {
     }
 })
 
-router.post("/style", async (req, res) => {
-    try {
-        const { 
-            headerColor,
-            backgroundColor,
-            customizedText,
-            introFields,
-            welcomeText,
-            chatTimer,
-            } = req.body;
-        exististingStyle = await ChatbotStyle.findOne({});
-        if (exististingStyle) {
-            exististingStyle.headerColor = headerColor;
-            exististingStyle.backgroundColor = backgroundColor;
-            exististingStyle.customizedText = customizedText;
-            exististingStyle.introFields = introFields;
-            exististingStyle.welcomeText = welcomeText;
-            exististingStyle.chatTimer = chatTimer;
-            await exististingStyle.save();
-        } else {
-            const newStyle = new ChatbotStyle({
-                headerColor,
-                backgroundColor,
-                customizedText,
-                introFields,
-                welcomeText,
-                chatTimer,
-            });
-            await newStyle.save();
-        }
-        
-       res.status(201).json({ message: "Style created/updated successfully" });
-    } catch (error) {
-        console.error("Error creating style:", error);
-        return res.status(500).json({ message: "Internal server error" });
-    }
-})
-
 router.get("/allTickets", authMiddleware, errorLogger, async (req, res) => {
     try {
         const allTickets = await Tickets.find({})
@@ -189,9 +151,10 @@ router.get("/unresolved", authMiddleware, errorLogger, async (req, res) => {
     }
 });
 
-router.get("/allchats", authMiddleware, errorLogger, async (req, res) => {
+router.get("/allchats/:ticketId", authMiddleware, errorLogger, async (req, res) => {
     try {
-        const allChats = await Tickets.find({});
+        const { ticketId } = req.params;
+        const allChats = await Tickets.find({ _id: ticketId }).select("userDetails ticketNo status messages");
         
         return res.status(200).json({ chats: allChats });
     } catch (error) {
