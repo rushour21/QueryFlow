@@ -53,7 +53,7 @@ export default function Login() {
                         })} value={formData.password} type="password" placeholder='password'/>
 
                         <button type='submit'>Log in</button>
-                        <p>Don't have an account? <a href="/register">Sign Up</a></p>
+                        <p>Don't have an account? <span onClick={() => navigate('/register')}>Sign up</span> </p>
                     </form>
                    <p className='des'>This site is protected by reCAPTCHA and the <a href="#">Google Privacy Policy</a> and <a href="#">Terms of Service</a> apply. </p>
                 </div>
