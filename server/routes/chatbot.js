@@ -1,5 +1,5 @@
 import express from "express";
-import Tickets from "../modals/tickets";
+import Tickets from "../modals/tickets.js";
 import { errorLogger } from "../middleware/log.js";
 import ChatbotStyle from "../modals/chatbotStyle.js";
 import dotenv from "dotenv";
@@ -70,5 +70,7 @@ router.get("/chatbot", async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 })
+
+
 
 export default router;

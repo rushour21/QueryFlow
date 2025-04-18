@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import user from "../models/users.js";
+import User from "../modals/users.js";
 
 dotenv.config();
 
@@ -19,7 +19,7 @@ export const authMiddleware = async (req, res, next) => {  // Make function asyn
         console.log("Decoded Token:", decoded);
 
         // **Await** the database query
-        const userData = await user.findById(decoded.id).select("email");
+        const userData = await User.findById(decoded.id).select("email");
         if (!userData) {
             return res.status(404).json({
                 error: {

@@ -1,35 +1,35 @@
 import express from 'express';
-import Users from '../modals/users';
+import Users from '../modals/users.js';
 import { errorLogger } from "../middleware/log.js";
 import { authMiddleware } from "../middleware/auth.js";
 import dotenv from "dotenv";
-import e from 'express';
 dotenv.config();
 const router = express.Router();
 
-router.post("/addmember", authMiddleware, errorLogger, async (req, res) => {
+router.post("/addmember", authMiddleware,  async (req, res) => {
     try {
         const { username, email, designation } = req.body;
+        console.log("Adding member:", { username, email, designation });
+        console.log("User ID:", req.user.id);
         const existingUser = await Users.findOne({ email: email });
         if (existingUser) {
             return res.status(400).json({ message: "this member is already added" });
         }
         const newMember = new Users({
             userName: username,
-            email: email,
-            designation: designation,
+            email,
+            designation,
             createdBy: req.user.id,
         });
+        console.log("New member object:", newMember);
         await newMember.save();
         res.status(201).json({ message: "Member added successfully", userId: newMember._id });
     } catch (error) {
-        
-        errorLogger(error);
         res.status(500).json({ message: "Internal server error" });
     }
 })
 
-router.get("/members", authMiddleware, async (req, res) => {
+router.get("/addedmembers", authMiddleware, async (req, res) => {
     try {
         const members =  await Users.find({ createdBy: req.user.id }).select("userName email designation ");
         if (!members) {
@@ -43,10 +43,10 @@ router.get("/members", authMiddleware, async (req, res) => {
     }
 })
 
-router.delete("/delete/:username", authMiddleware, async (req, res) => {
+router.delete("/delete/:_Id", authMiddleware, async (req, res) => {
     try {
-        const { username } = req.params;
-        const member = await Users.findOneAndDelete({ userName: username });
+        const { _Id } = req.params;
+        const member = await Users.findOneAndDelete({ _id: _Id });
         if (!member) {
             return res.status(404).json({ message: "Member not found" });
         }
@@ -58,14 +58,17 @@ router.delete("/delete/:username", authMiddleware, async (req, res) => {
     }
 })  
 
-router.put("/update/:username", authMiddleware, async (req, res) => {
+router.put("/update/:_id", authMiddleware, async (req, res) => {
     try {
-        const { username } = req.params;
-        const { newUsername, newEmail, newDesignation } = req.body;
-        const member = await Users.findOneAndUpdate({ userName: username }, { userName: newUsername, email: newEmail, designation: newDesignation }, { new: true });
+        const { _id } = req.params;
+        console.log("Updating member with ID:", _id);
+        const { username, email, designation } = req.body;
+        console.log(req.body);
+        const member = await Users.findOneAndUpdate({ _id: _id }, { userName: username, email: email, designation: designation }, { new: true });
         if (!member) {
             return res.status(404).json({ message: "Member not found" });
         }
+        console.log("Updated member object:", member);
         res.status(200).json({ message: "Member updated successfully", member });
     } catch (error) {
         
@@ -73,4 +76,5 @@ router.put("/update/:username", authMiddleware, async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 })
+
 export default router;

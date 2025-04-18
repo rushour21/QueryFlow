@@ -1,10 +1,9 @@
 import express from "express";
-import Tickets from "../modals/tickets";
+import Tickets from "../modals/tickets.js";
 import { errorLogger } from "../middleware/log.js";
 import ChatbotStyle from "../modals/chatbotStyle.js";
 import dotenv from "dotenv";
-import { authMiddleware } from "../middleware/auth.js";
-import tickets from "../modals/tickets";
+import { authMiddleware } from "../middleware/auth.js";  
 dotenv.config();
 const router = express.Router();
 
@@ -21,12 +20,13 @@ router.post("/create", async (req, res) => {
                 phone: phone,
                 email: email,
             },
-            Messages: [{
+            messages: [{
                 sender: "user",
                 text: initialMessage,
                 timestamp: new Date(),
             }],
-            status: "pending",
+            status: "Pending",
+            initialMessage: initialMessage,
         });
         await newTicket.save();
         return res.status(201).json({ message: "Ticket created successfully", ticket: newTicket._id });
@@ -37,7 +37,31 @@ router.post("/create", async (req, res) => {
     }
 })
 
-router.put("/update/:ticketId", async (req, res) => {
+router.put("/usermessage/:ticketId", async (req, res) => {
+    try {
+        const { ticketId } = req.params;
+        const { message } = req.body;
+        if (!message) {
+            return res.status(400).json({ message: "Message is required" });
+        }
+        const ticket = await Tickets.findById(ticketId);
+        if (!ticket) {
+            return res.status(404).json({ message: "Ticket not found" });
+        }
+        ticket.messages.push({
+            sender: "user",
+            text: message,
+            timestamp: new Date(),
+        });
+        await ticket.save();
+        return res.status(200).json({ message: "Ticket updated successfully", ticket });
+    } catch (error) {
+        console.error("Error updating ticket:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+})
+
+router.put("/adminmessage/:ticketId", async (req, res) => {
     try {
         const { ticketId } = req.params;
         const { message } = req.body;

@@ -1,5 +1,5 @@
 import express from 'express';
-import Users from '../modals/users';
+import Users from '../modals/users.js';
 import bcrypt from "bcrypt";
 import { errorLogger } from "../middleware/log.js";
 import { authMiddleware } from "../middleware/auth.js";
@@ -28,7 +28,9 @@ router.post("/register", errorLogger, async (req, res) => {
                 password: hashedPassword,
                 designation: "admin",
             });
+            console.log("Saving new user:", newUser);
             await newUser.save();
+            console.log("User saved successfully");
             res.status(200).json({ message: "User created successfully", userId: newUser._id });
         }
     }
@@ -49,7 +51,7 @@ router.post("/login", async (req, res) => {
       // If member → get password from admin
       if (user.createdBy) {
         const admin = await Users.findById(user.createdBy);
-        if (!admin) return res.status(400).json({ message: "Admin not found" });
+        if (!admin) return res.status(400).json({ message: "Admin not found" }); 
   
         passwordToCompare = admin.password;
       }

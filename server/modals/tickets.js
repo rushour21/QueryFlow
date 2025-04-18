@@ -17,7 +17,6 @@ const querySchema = new mongoose.Schema({
       },
       initialMessage: {
         type: String,
-        required: true,
       },
       messages: [
         {
@@ -52,8 +51,6 @@ const querySchema = new mongoose.Schema({
       },
       ticketNo: {
         type: String,
-        unique: true,
-        required: true,
       },
 })
 
@@ -61,10 +58,14 @@ querySchema.pre("save", function (next) {
   if (!this.ticketNo) {
     const today = new Date();
     const year = today.getFullYear();
-    const month = today.getMonth() + 1; // 1-based month
-    const day = String(today.getDate()).padStart(3, "0"); // pad day to 3 digits
-    this.ticketNo = `${year}-0${month}${day}`;
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    const ms = today.getMilliseconds(); // makes it more unique
+
+    this.ticketNo = `${year}-0${month}${day}-${ms}`;
   }
   next();
 });
+
+
 export default mongoose.model("Query", querySchema)
