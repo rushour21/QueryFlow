@@ -1,0 +1,4 @@
+.alltickets{
+    overflow-y: scroll;
+    height: 70vh;
+}

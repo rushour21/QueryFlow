@@ -1,0 +1,26 @@
+.sidebar{
+    width: 7vw;
+    height: 100vh;
+    text-align: center;
+    border-right: 2px solid #d1d6da;
+}
+.logo{
+    width: 40px;
+    height: 40px;
+}
+.menu{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 10px;
+    font-weight: 500;
+    text-decoration: none;
+}
+.item{
+    text-decoration: none;
+    color: #424242;
+    text-align: center;
+}
+.profileIcon{
+    margin-top: 200px;
+}

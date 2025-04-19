@@ -23,20 +23,19 @@ export default function register() {
     event.preventDefault();
     try {
         const res = await axios.post(
-            `${import.meta.env.VITE_API_URL}/api/user/register`,
+            `${import.meta.env.VITE_API_URL}/api/users/register`,
             formData,
             { headers: { "Content-Type": "application/json" } }
         );
         console.log("Full Response:", res); // Debug: Log full response
-        console.log("User ID:", res.data?.userId); // Log user ID
-        toast.success("Registration successful");
+        alert("Registration successful");
 
-        if (res.data?.userId) {
-            localStorage.setItem("userId", res.data.userId);
-            navigate('/preference');
+        if (res.data?.token) {
+            localStorage.setItem("token", res.data.token);
+            navigate('/dashboard');
         } else {
             console.error("User ID not found in response");
-            toast.error("Registration failed");
+            aletrt("Registration failed");
         }
     } catch (error) {
         console.error("Error:", error);

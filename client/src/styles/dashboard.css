@@ -1,0 +1,7 @@
+.dashboardLayout{
+    display: flex;
+    height: 100vh;
+}
+.dashboardContent{
+    flex: 1;
+}

@@ -31,7 +31,13 @@ router.post("/register", errorLogger, async (req, res) => {
             console.log("Saving new user:", newUser);
             await newUser.save();
             console.log("User saved successfully");
-            res.status(200).json({ message: "User created successfully", userId: newUser._id });
+
+            const token = jwt.sign(
+                { id: newUser._id, username: newUser.userName },
+                process.env.JWT_SECRET,
+                { expiresIn: "3h" }
+            );
+            res.status(200).json({ message: "User created successfully", token });
         }
     }
     catch (err) {
@@ -42,10 +48,11 @@ router.post("/register", errorLogger, async (req, res) => {
 router.post("/login", async (req, res) => {
     try {
       const { username, password } = req.body;
-  
+        console.log(req.body);
       const user = await Users.findOne({ userName: username });
+      console.log(user);
       if (!user) return res.status(400).json({ message: "Invalid username" });
-  
+    
       let passwordToCompare = user.password;
   
       // If member → get password from admin

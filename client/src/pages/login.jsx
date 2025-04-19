@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Sideimg from '../assets/Frame.png'
 import Logo from '../assets/logo.png'
-import axios from 'axios';  
+import axios from 'axios'
 import "../styles/login.css"
 
 export default function Login() {
@@ -13,22 +13,22 @@ export default function Login() {
             password : "",
     
         })
+        console.log(formData)
         const handleSubmit = async (event) => {
             event.preventDefault();
             try {
                 const res = await axios.post(
-                    `${import.meta.env.VITE_API_URL}/api/user/login`,
+                    `${import.meta.env.VITE_API_URL}/api/users/login`,
                     formData,
                     { headers: { "Content-Type": "application/json" } }
                 );
-        
-                toast.success("login successful");
+                alert("login successful");
                 const token = res.data.token;
                 localStorage.setItem("authToken", token);
                 navigate('/dashboard'); // Store in localStorage
             } catch (error) {
                 console.error("Error:", error);
-                toast.error("login failed");
+                alert("login failed");
             }
           };
   return (
