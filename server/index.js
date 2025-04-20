@@ -21,27 +21,20 @@ app.use(cors());
 app.use(log);
 app.use(errorLogger);
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use('/api/users', userRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/members', memberRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 
 const connectDB = async () => {
-    console.log("Connecting to:", process.env.MONGODB_URI);
-    try {        
-        await mongoose.connect(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+    try {
+        await mongoose.connect(process.env.MONGODB_URI);
         console.log("Connected to MongoDB");
-        console.log("Connecting to:", process.env.MONGODB_URI);
     } catch (error) {
         console.error("Error connecting to MongoDB:", error);
     }
 };
-
 connectDB();
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

@@ -1,4 +1,74 @@
 .alltickets{
     overflow-y: scroll;
     height: 70vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.ticketcard{
+    width: 98%;
+    border: 1px solid #B6B6B6;
+    border-radius: 7px;
+
+}
+.details{
+    width: 98%;
+    display: flex;
+    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
+.ticNo{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+.dot{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #F8A534;
+}
+.exacttime{
+    font-size: 11px;
+    color: #84818A;
+    margin-bottom: 15px;
+}
+.timeperiod{
+    text-align: right;
+    font-size: 13px;
+}
+.msg{
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+}
+.details-1{
+    width: 98%;
+    display: flex;
+    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    border-top: 1px solid #B6B6B6;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.info-1{
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    color: #84818A;
+    gap: 5px;
+}
+.info-1 img{
+    width: 40px;
+    height:40px;
+}
+.user-info{
+    height: 50px;
 }

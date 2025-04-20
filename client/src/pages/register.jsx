@@ -31,7 +31,7 @@ export default function register() {
         alert("Registration successful");
 
         if (res.data?.token) {
-            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("authToken", res.data.token);
             navigate('/dashboard');
         } else {
             console.error("User ID not found in response");
@@ -39,7 +39,7 @@ export default function register() {
         }
     } catch (error) {
         console.error("Error:", error);
-        toast.error("Registration failed");
+       alert("Registration failed");
     }
   };
 

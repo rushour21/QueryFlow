@@ -1,15 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { PiShoppingBagBold   } from "react-icons/pi";
 import { CiSearch } from "react-icons/ci";
 import "../styles/home1.css"
 
 export default function home1() {
+  const [searchQuery, setSearchQuery] = useState('');
   return (
     <div className='dashboard'>
       <div className='dash-header'>
         <h2>Dashboard</h2>
-        <div className='searchbar'><CiSearch size={25}/><input type="text" placeholder="Search for ticket" /></div>
+        <div className='searchbar'>
+          <CiSearch size={25}/>
+          <input 
+            type="text" 
+            placeholder="Search for ticket" 
+            value={searchQuery} 
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
       </div>      
       <div className='dash-content'>
         <div className='tickets'>
@@ -42,7 +51,7 @@ export default function home1() {
 
         </div>
         <div className='ticket_list'>
-          <Outlet/>
+          <Outlet context={{ searchQuery }}/>
         </div>
       </div>
     </div>
