@@ -163,5 +163,15 @@ router.get("/allchats/:ticketId", authMiddleware, errorLogger, async (req, res) 
         return res.status(500).json({ message: "Internal server error" });
     }
 })
+router.get("/getallTickets", authMiddleware, errorLogger, async (req, res) => {
+    try {
+        const allTickets = await Tickets.find({})
+
+        return res.status(200).json({ tickets: allTickets });
+    } catch (error) {
+        console.error("Error fetching tickets:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+})
 
 export default router

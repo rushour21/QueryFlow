@@ -1,12 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import logo_1 from '../assets/logo_1.png'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { CircleUserRound, House, MessageSquareText, ChartNoAxesColumn, Bot,Settings } from 'lucide-react';
 import { FaUsers } from "react-icons/fa6";
 import '../styles/sidebar.css'
+import axios from 'axios';
 
 export default function sidebar() {
   const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  console.log(username);
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    const getusername = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/getusername`, {
+          headers: {
+            Authorization: token
+          }
+        });
+    
+        const { firstName, lastName } = res.data;
+    
+        // Combine first and last name, handle missing values
+        const fullName = `${firstName} ${lastName}`.trim();    
+        setUsername(fullName);
+      } catch (error) {
+        console.error("Error fetching username:", error);
+      }
+    };
+    getusername();
+    }, []);
 
   return (
     <div className='sidebar'>

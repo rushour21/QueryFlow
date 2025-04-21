@@ -1,0 +1,108 @@
+.contactCenter{
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+.query-list{
+    height: 100vh;
+    width: 25%;
+    background-color: #FAFBFC;
+    border-right: 1px solid #D1D6DA;
+    display: flex;
+    flex-direction: column;
+}
+.query-list >p{
+    color : #6A6B70;
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: 20px;
+}
+.chat_y{
+    width: 95%;
+    height: 25px;
+    margin-top: 60px;
+    margin-left: 10px;
+    border-bottom: #6A6B70 1px solid;
+    display: flex;
+    align-items: center;
+}
+.chat_y >p{
+    color: #6A6B70;
+    border-bottom: #6A6B70 2px solid;
+    height: 100%;
+}
+.chats{
+    margin-left: 10px;
+    margin-top: 10px;
+    overflow-y: scroll;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.chat{
+    display: flex;
+    border-radius: 27px;
+}
+.chat >img{
+    width: 40px;
+    height: 40px;
+    margin: 4px;
+}
+.chat-section{
+    height: 100vh;
+    width: 40%;
+}
+.header_c{
+    width: 90%;
+    height: 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #E4E4E4;
+    margin-left: auto;
+    margin-right: auto;
+    color: #86898C;
+    font-size: 15px;
+    font-weight: 700;
+}
+.chat-box{
+    width: 100%;
+    height: 75%;
+}
+.input-field{
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+    height: 85px;
+    position: relative;
+}
+.input-field >textarea{
+    width: 100%;
+    height: 100%;
+    border: 1px solid #D1D6DA;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #86898C;
+
+}
+.send{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 1.5px solid #D1D6DA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+
+}
+.query-details{
+    height: 100vh;
+    width: 35%;
+    background-color: #FAFBFC;
+    border-left: 1px solid #D1D6DA;
+}

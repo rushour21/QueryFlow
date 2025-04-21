@@ -119,4 +119,30 @@ router.put("/profile", authMiddleware, errorLogger, async (req, res) => {
     }
 });
 
+router.get("/getusername", authMiddleware, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const existingUser = await Users.findById(userId);
+
+        if (!existingUser) {
+            return res.status(404).json({
+                error: {
+                    message: "User not found",
+                    status: 404
+                }
+            });
+        }
+
+        // Use firstName and lastName if available, otherwise fallback to username
+        const firstName = existingUser.firstName || existingUser.username;
+        const lastName = existingUser.lastName || "";
+
+        res.status(200).json({ firstName, lastName });
+    } catch (err) {
+        errorLogger(err, req, res);
+    }
+});
+
+
+
 export default router;
