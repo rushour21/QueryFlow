@@ -40,7 +40,7 @@ export default function sidebar() {
           <NavLink to="home1">
             {({ isActive }) => (
               <div className='item'>
-                <House size={16} />
+                <House size={18} />
                 {isActive && <p>Dashboard</p>}
               </div>
             )}
@@ -49,7 +49,7 @@ export default function sidebar() {
           <NavLink to="contact-center">
             {({ isActive }) => (
               <div className='item'>
-                <MessageSquareText size={16} />
+                <MessageSquareText size={18} />
                 {isActive && <p>Contact Center</p>}
               </div>
             )}
@@ -58,7 +58,7 @@ export default function sidebar() {
           <NavLink to="analytics">
             {({ isActive }) => (
               <div className='item'>
-                <ChartNoAxesColumn size={16} />
+                <ChartNoAxesColumn size={18} />
                 {isActive && <p>Analytics</p>}
               </div>
             )}
@@ -67,7 +67,7 @@ export default function sidebar() {
           <NavLink to="chatbot">
             {({ isActive }) => (
               <div className='item'>
-                <Bot size={16} />
+                <Bot size={18} />
                 {isActive && <p>Chat Bot</p>}
               </div>
             )}
@@ -76,7 +76,7 @@ export default function sidebar() {
           <NavLink to="team">
             {({ isActive }) => (
               <div className='item'>
-                <FaUsers size={16} />
+                <FaUsers size={18} />
                 {isActive && <p>Team</p>}
               </div>
             )}
@@ -85,7 +85,7 @@ export default function sidebar() {
           <NavLink to="settings">
             {({ isActive }) => (
               <div className='item'>
-                <Settings size={16} />
+                <Settings size={18} />
                 {isActive && <p>Settings</p>}
               </div>
             )}

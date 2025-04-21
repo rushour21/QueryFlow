@@ -13,9 +13,10 @@
 }
 .query-list >p{
     color : #6A6B70;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 600;
     margin-left: 20px;
+    margin-top: 10px;
 }
 .chat_y{
     width: 95%;
@@ -105,4 +106,96 @@
     width: 35%;
     background-color: #FAFBFC;
     border-left: 1px solid #D1D6DA;
+    color: #7F7F7F;
+}
+.top{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+}
+.top >img{
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+}
+.details_c{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.det_11{
+    height: 30px;
+    width: 95%;
+    color: #808080;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #ffffff;
+    border: 1px solid #808080;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+
+}
+.det_1{
+    color: #184E7F;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 10px 10px;
+}
+.dropdown-toggle{
+    height: 30px;
+    width: 95%;
+    color: #808080;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 5px;
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    background-color: #ffffff;
+    border: 1px solid #808080;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+}
+.dropdown-toggle >span{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.option{
+    height: 30px;
+    width: 95%;
+    color: #808080;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    background-color: #ffffff;
+    border: 1px solid #808080;
+    border-radius: 5px;
+    padding-left: 5px;
+}
+.member_q{
+    height: 30px;
+    width: 95%;
+    color: #808080;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 5px;
+    display: flex;
+    background-color: #ffffff;
+    border: 1px solid #808080;
+    border-radius: 5px;
+    padding-left: 5px;
 }
