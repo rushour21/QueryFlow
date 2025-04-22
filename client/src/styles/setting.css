@@ -1,0 +1,75 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    background-color: #f8f8f8;
+    min-height: 100vh;
+  }
+  
+  .user-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .info-icon {
+    margin-left: 8px;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .tooltip {
+    position: absolute;
+    bottom: -30px;
+    left: -20px;
+    background-color: white;
+    padding: 6px 10px;
+    border-radius: 5px;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2);
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10;
+  }
+  
+  .save-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0b4c8c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .save-button:hover {
+    background-color: #093e70;
+  }
+  

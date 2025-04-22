@@ -57,7 +57,7 @@ export default function Team() {
       if (editMode) {
         // Edit request
         await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/members/editmember/${currentMember._id}`,
+          `${import.meta.env.VITE_API_URL}/api/members/update/${currentMember._id}`,
           formData,
           { headers: { Authorization: token } }
         );
@@ -94,7 +94,7 @@ export default function Team() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this member?')) return;
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/members/deletemember/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/members/delete/${id}`, {
         headers: { Authorization: token },
       });
       setRefresh((prev) => !prev); // re-fetch data
@@ -189,8 +189,8 @@ export default function Team() {
               required
             >
               <option value="">Select Role</option>
-              <option value="Admin">Admin</option>
-              <option value="Member">Member</option>
+              <option value="admin">Admin</option>
+              <option value="member">Member</option>
             </select>
 
             <div className="form-buttons">

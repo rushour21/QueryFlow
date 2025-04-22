@@ -29,10 +29,15 @@
     font-size: 13px;
     font-weight: 600;
     padding-left: 50px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #E2E8F0;   
+    margin-top: 20px;
+
 }
 .team-member >P{
     width: 200px;
     text-align: center;
+
 }
 .team-sec >button{
     margin-left: 85%;

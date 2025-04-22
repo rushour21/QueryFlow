@@ -33,7 +33,7 @@ router.post("/addmember", authMiddleware,  async (req, res) => {
 
 router.get("/addedmembers", authMiddleware, async (req, res) => {
     try {
-        const members =  await Users.find({ createdBy: req.user.id }).select("userName email designation ");
+        const members =  await Users.find({ createdBy: req.user.id }).select("userName email designation phone");
         if (!members) {
             return res.status(404).json({ message: "No members found" });
         }
@@ -64,9 +64,10 @@ router.put("/update/:_id", authMiddleware, async (req, res) => {
     try {
         const { _id } = req.params;
         console.log("Updating member with ID:", _id);
-        const { username, email, designation } = req.body;
+        const { userName, email, designation, phone } = req.body;
         console.log(req.body);
-        const member = await Users.findOneAndUpdate({ _id: _id }, { userName: username, email: email, designation: designation }, { new: true });
+        const member = await Users.findOneAndUpdate({ _id: _id }, { userName: userName, email: email, designation: designation, phone: phone }, { new: true });
+        console.log("Member after update:", member);
         if (!member) {
             return res.status(404).json({ message: "Member not found" });
         }
