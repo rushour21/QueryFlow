@@ -79,45 +79,49 @@ router.post("/login", async (req, res) => {
   });
   
 
-router.put("/profile", authMiddleware, errorLogger, async (req, res) => {
+  router.put("/profile", authMiddleware, errorLogger, async (req, res) => {
     try {
-        
-        const { firstname, lastname, email, password } = req.body;
-        const userId = req.user.id;  // Get userId from URL
-        console.log(req.user);
-        console.log(userId);
-        const existingUser = await Users.findById(userId);
-        if (!existingUser) {
-            return res.status(404).json({
-                error: {
-                    message: "User not found",
-                    status: 404
-                }
-            });
-        }
-        // Prepare update object
-        let updateFields = {
-            firstName: firstname || existingUser.firstName,
-            lastName: lastname || existingUser.lastName,
-            email: email || existingUser.email,
-            userName: email || existingUser.email,
-            updatedAt: Date.now()
-        };
-
-        // Hash password only if provided
-        if (password) {
-            updateFields.password = bcrypt.hashSync(password, 10);
-        }
-
-        // Update the user profile
-        const updatedProfile = await Users.findByIdAndUpdate(userId, updateFields, { new: true });
-
-        res.status(200).json({ message: "Profile updated successfully", user: updatedProfile });
-        }
-    catch (err) {
-        errorLogger(err, req, res);
+      const { firstname, lastname, email, password } = req.body;
+      const userId = req.user.id; // Fetched from authMiddleware
+  
+      const existingUser = await Users.findById(userId);
+      if (!existingUser) {
+        return res.status(404).json({
+          error: {
+            message: "User not found",
+            status: 404
+          }
+        });
+      }
+      if(existingUser.designation === "member"){
+        return res.status(403).json({ message: "Members cannot update profile." });
+      }
+  
+      // Construct fields to update
+      const updateFields = {
+        firstName: firstname || existingUser.firstName,
+        lastName: lastname || existingUser.lastName,
+        email: email || existingUser.email,
+        userName: email || existingUser.email,
+        updatedAt: Date.now()
+      };
+  
+      if (password) {
+        updateFields.password = await bcrypt.hash(password, 10); // Await is cleaner than sync
+      }
+  
+      const updatedUser = await Users.findByIdAndUpdate(userId, updateFields, {
+        new: true
+      });
+  
+      res.status(200).json({
+        message: "Profile updated successfully",
+        user: updatedUser
+      });
+    } catch (err) {
+      errorLogger(err, req, res); // You can also just `next(err)` if using centralized error handler
     }
-});
+  });
 
 router.get("/getusername", authMiddleware, async (req, res) => {
     try {
@@ -147,7 +151,7 @@ router.get("/getuser", authMiddleware, async (req, res) => {
     try {
         const userId = req.user.id;
         const existingUser = await Users.findById(userId);
-
+        console.log(existingUser);
         if (!existingUser) {
             return res.status(404).json({
                 error: {
@@ -158,6 +162,7 @@ router.get("/getuser", authMiddleware, async (req, res) => {
         }
 
         res.status(200).json({ user: existingUser });
+        co
     } catch (err) {
         errorLogger(err, req, res);
     }
