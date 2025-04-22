@@ -5,6 +5,7 @@ import Login from './pages/login.jsx';
 import Register from './pages/register.jsx';
 import Home from './pages/home.jsx';  
 import Dashboard from './pages/dashboard.jsx';
+import ProtectedRoute from './component/protectedRoute.jsx';
 import './index.css'
 
 const Home1 = lazy(() => import('./component/home1.jsx'));
@@ -29,7 +30,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />}>
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}>
           {/* Add any nested routes here if needed */}
           <Route index element={<Navigate to="home1"/>} />
           <Route path="home1" element={<Suspense fallback={<LoadingFallback />}><Home1 /></Suspense>}>
