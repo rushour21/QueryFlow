@@ -114,7 +114,7 @@ export default function ContactCenter() {
         </div>
 
         <div className='chat-box'>
-          {selectedTicket.messages.map((message, index) => {
+          {selectedTicket?.messages?.map((message, index) => {
             const isUser = message.sender === 'user';
             return (
               <div

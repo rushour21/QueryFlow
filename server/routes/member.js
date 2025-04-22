@@ -8,21 +8,23 @@ const router = express.Router();
 
 router.post("/addmember", authMiddleware,  async (req, res) => {
     try {
-        const { username, email, designation } = req.body;
-        console.log("Adding member:", { username, email, designation });
+        const { userName, email, phone, designation } = req.body;
+        console.log("Request body:", req.body);
         console.log("User ID:", req.user.id);
         const existingUser = await Users.findOne({ email: email });
         if (existingUser) {
             return res.status(400).json({ message: "this member is already added" });
         }
         const newMember = new Users({
-            userName: username,
-            email,
-            designation,
+            userName : userName,
+            email : email,
+            designation :  designation, 
+            phone : phone,
             createdBy: req.user.id,
         });
-        console.log("New member object:", newMember);
         await newMember.save();
+
+        console.log("New member object:", newMember);
         res.status(201).json({ message: "Member added successfully", userId: newMember._id });
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
