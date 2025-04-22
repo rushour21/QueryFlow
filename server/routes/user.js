@@ -143,6 +143,26 @@ router.get("/getusername", authMiddleware, async (req, res) => {
     }
 });
 
+router.get("/getuser", authMiddleware, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const existingUser = await Users.findById(userId);
+
+        if (!existingUser) {
+            return res.status(404).json({
+                error: {
+                    message: "User not found",
+                    status: 404
+                }
+            });
+        }
+
+        res.status(200).json({ user: existingUser });
+    } catch (err) {
+        errorLogger(err, req, res);
+    }
+});
+
 
 
 export default router;
