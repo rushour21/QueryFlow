@@ -56,6 +56,7 @@ router.get("/getstyle", async (req, res) => {
             return res.status(404).json({ message: "Style not found" });
         }
         res.status(200).json({ style });
+        console.log(style);
     } catch (error) {
         console.error("Error fetching style:", error);
         return res.status(500).json({ message: "Internal server error" });

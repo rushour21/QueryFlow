@@ -8,7 +8,12 @@ const chatbotStyleSchema = new mongoose.Schema({
         type: String,
     },
     customizedText: {
-        type: [String],
+        first:{
+            type : String
+        },
+        second:{
+            type: String,
+        }
     },
     introFields: {
        yourName: {
@@ -22,10 +27,10 @@ const chatbotStyleSchema = new mongoose.Schema({
         },
     },
     welcomeText: {
-        type: [String],
+        type: String,
     },
     chatTimer: {
-        type: Number,
+        type: String,
     },
 });
 
