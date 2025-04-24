@@ -1,0 +1,89 @@
+
+
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+.landing-page{
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #f8fbfe;
+}
+.head-ll{
+  width: 95%;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 80px;
+  
+}
+.head-ll >img{
+  height: 50px;
+}
+.head-but >button{
+  width: 65px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid #666666;
+}
+.lo{
+  background-color: white;
+}
+.sig{
+  background-color: #244779;
+  color: #ffffff;
+}
+.hero{
+  display: flex;
+  width: 90%;
+
+}
+.hero-l{
+  margin-top: 40px;
+  color: #30404D;
+  position: relative;
+}
+.hero-l-b{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+.hero-l-b>button{
+  background-color: #30404D;
+  color: #ffffff;
+  height: 30px;
+  width: 100px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+.video{
+  width: 150px;
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.ply{
+  border: 1px solid #30404D;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.img-1{
+  width: 300px;
+}
+.img-2{
+  position: absolute;
+  display: none;
+}
+.img-3{
+  position: absolute;
+  display: none;
+}
