@@ -7,19 +7,19 @@ import '../styles/chatbot.css'
 
 export default function chatbot() {
   const [chatbotStyle, setChatbotStyle] = useState({
-      headerColor: '',
-      backgroundColor: '',
+      headerColor: '#33475B',
+      backgroundColor: '#e8a088',
       customizedText: {
-        first:"",
-        second:""
+        first:"How can i help you?",
+        second:"Ask me anything!"
       },
       introFields: {
-        yourName: '',
-        yourEmail: '',
-        yourPhone: ''
+        yourName: 'Your name',
+        yourEmail: '+1 (000) 000-0000',
+        yourPhone: 'example@gmail.com'
       },
-      welcomeText: '',
-      chatTimer: ""
+      welcomeText: "👋 Want to chat about Hubly? I'm an chatbot here to help you find your way.",
+      chatTimer: "1"
     })
   const [editable, setEditable] = useState({
     input1: false,

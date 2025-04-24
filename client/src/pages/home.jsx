@@ -1,5 +1,5 @@
-import React from 'react'
-import { Mail, Linkedin, Twitter, Youtube, Instagram, GithubIcon, Figma ,Play, ArrowRight, CircleCheck, x   } from 'lucide-react';
+import React, { useState } from 'react'
+import { Mail, Linkedin, Twitter, Youtube, Instagram, GithubIcon, Figma, Send, Play, ArrowRight, CircleCheck, X  } from 'lucide-react';
 import { BiSolidChat } from "react-icons/bi";
 import Logo from "../assets/full.png"
 import Group from "../assets/Group.png"
@@ -11,12 +11,23 @@ import Op from "../assets/Op.png"
 import Ai from "../assets/Ai.png"
 import Icn from "../assets/icn.png"
 import BoxImg from "../assets/box-img.png"
+import Ellipse from "../assets/Ellipse 6.png"
+
 
 import "../styles/home.css"
 
 import { NavLink } from 'react-router-dom'
+import chatbot from '../component/chatbot';
 
 export default function home() {
+  const [chatopen, setChatopen] = useState(false)
+  const [msgopen, setMsgopen] = useState(false)
+  console.log(msgopen)
+
+  const handlebot = ()=>{
+    setChatopen(!chatopen)
+    setMsgopen(false)
+  }
   return (
     <div className='landing-page'>
       <div className='head-ll'>
@@ -43,6 +54,36 @@ export default function home() {
           </div>
         </div>
       </div>
+      
+      {chatopen && <div className='chat-bot'>
+        <div className='header-chat' style={{}}>
+          <img className='ell' src={Ellipse} alt="" />
+          <p>Hubly</p>
+        </div>
+        <div className='msg-chat' style={{}}>
+        </div>
+        <div className='footer-chat'>
+            <textarea name="" id="" placeholder='Write a message'></textarea>
+            <div className='send'><Send size={18}/></div>
+        </div>
+      </div>}
+
+      {msgopen && <div className='msg-box'>
+      <div className='popup-l'>
+        <img src={Ellipse} alt="" />
+        <div className='popup-con1'>
+        <p>👋 Want to chat about Hubly? I'm an chatbot here to help you find your way.</p>
+        <div className='cls'><X size={15}/></div>
+        </div>
+      </div>
+      </div>}
+
+      <div 
+      onMouseEnter={() => setMsgopen(true)}  
+      onMouseLeave={() => setMsgopen(false)}
+      onClick={handlebot}  
+      className='chat-icon'><BiSolidChat color='white' size={25}/></div>
+      
       <div className='c-names'>
         <img src={Ad} />
         <img src={Ai}  />
