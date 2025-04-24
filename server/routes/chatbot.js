@@ -7,46 +7,19 @@ dotenv.config();
 const router = express.Router();
 
 
-router.post("/style", async (req, res) => {
+router.put("/style", async (req, res) => {
     try {
-          const {
-            headerColor,
-            backgroundColor,
-            customizedText,
-            introFields,
-            welcomeText,
-            chatTimer,
-          } = req.body;
+      const {chatbotStyle} = req.body;
+      const Id = "6809345b22ef2817b049173d"
+      const updatedstyle = await ChatbotStyle.findOneAndUpdate({}, chatbotStyle  ,{ new: true, upsert: true })
+      console.log(chatbotStyle)
+      res.status(200).json({ updatedstyle });
+      console.log(updatedstyle)
+    } catch (error) {
+      console.error("Error updating style:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
           
-          const existingStyle = await ChatbotStyle.findOne({});
-          
-          if (existingStyle) {
-            existingStyle.headerColor = headerColor;
-            existingStyle.backgroundColor = backgroundColor;
-            existingStyle.customizedText = customizedText;
-            existingStyle.introFields = introFields;
-            existingStyle.welcomeText = welcomeText;
-            existingStyle.chatTimer = chatTimer;
-            
-            await existingStyle.save();
-          } else {
-            const newStyle = new ChatbotStyle({
-              headerColor,
-              backgroundColor,
-              customizedText,
-              introFields,
-              welcomeText,
-              chatTimer,
-            });
-            
-            await newStyle.save();
-          }
-          
-          res.status(201).json({ message: "Style created/updated successfully" });
-        } catch (error) {
-          console.error("Error creating style:", error);
-          return res.status(500).json({ message: "Internal server error" });
-        }
 })
 
 router.get("/getstyle", async (req, res) => {

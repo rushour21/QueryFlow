@@ -33,12 +33,15 @@
     height: 40px;
     border-radius: 50%;
     border: 1px solid #b1b4b8;
+    cursor: pointer;
 }
 .colors{
     display: flex;
     gap: 5px;
     margin-top: 20px;
     margin-left: 20px;
+    cursor: pointer;
+
 }
 .color-box1{
     width: 40px;
@@ -250,4 +253,10 @@
     position: absolute;
     top: 20px;
     right: 5px;
+}
+.pen-1{
+    cursor: pointer;
+}
+.penn{
+    cursor: pointer;
 }

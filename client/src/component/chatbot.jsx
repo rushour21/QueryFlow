@@ -3,7 +3,6 @@ import { Pencil, Send,X } from 'lucide-react';
 import Ellipse from "../assets/Ellipse 6.png"
 import axios from 'axios';
 
-
 import '../styles/chatbot.css'
 
 export default function chatbot() {
@@ -27,48 +26,81 @@ export default function chatbot() {
     input2: false,
     textarea:false
   })
-    useEffect (() => {
-      const fetchstyle = async ()=> {
-          try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/chatbot/getstyle`,)
-            setChatbotStyle(response.data.style);
-            console.log(response.data.style);
-          } catch (error) {
-          }
-      }
-      fetchstyle();
+
+  useEffect (() => {
+    const fetchstyle = async ()=> {
+        try {
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/chatbot/getstyle`,)
+          setChatbotStyle(response.data.style);
+          console.log(response.data.style);
+        } catch (error) {
+          console.error("Error fetching style:", error);
+        }
+    }
+    fetchstyle();
   },[])
 
   const isFirstRender = useRef(true);
-  const debounceTimeout = useRef(null);
+  // Separate refs for different debounce timers
+  const styleUpdateTimeout = useRef(null);
+  const welcomeMessageTimeout = useRef(null);
 
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
   
-
-  // Debounced input handler
+    if (styleUpdateTimeout.current) {
+      clearTimeout(styleUpdateTimeout.current);
+    }
+  
+    styleUpdateTimeout.current = setTimeout(async () => {
+      try {
+        const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/chatbot/style`, {
+          chatbotStyle,
+        });
+        console.log("Style updated successfully:", response.data);
+      } catch (error) {
+        console.error("Error updating style:", error);
+      }
+    }, 500); // 500ms debounce
+    
+    return () => {
+      if (styleUpdateTimeout.current) {
+        clearTimeout(styleUpdateTimeout.current);
+      }
+    };
+  }, [chatbotStyle]);
+  
+  console.log(chatbotStyle)
+ 
+  // Debounced input handler for welcome message
   const wordLimit = 50;  
   const handleChange = (e) => {
     const input = e.target.value;
     const words = input.trim().split(/\s+/);
 
-    if (debounceTimeout.current) {
-      clearTimeout(debounceTimeout.current); // Clear the previous timeout
+    if (welcomeMessageTimeout.current) {
+      clearTimeout(welcomeMessageTimeout.current); // Clear the previous timeout
     }
 
-    debounceTimeout.current = setTimeout(() => {
+    welcomeMessageTimeout.current = setTimeout(() => {
       if (words.length <= wordLimit) {
-        setChatbotStyle((prevState) => ({
+        setChatbotStyle(prevState => ({
           ...prevState,
           welcomeText: input
         }));
       } else {
         const trimmed = words.slice(0, wordLimit).join(" ");
-        setChatbotStyle((prevState) => ({
+        setChatbotStyle(prevState => ({
           ...prevState,
           welcomeText: trimmed
         }));
       }
-    }, 200); // Debounced delay (500ms)
+    }, 200); // Debounced delay (200ms)
   };
+  
   const wordCount = chatbotStyle.welcomeText.trim().split(/\s+/).filter(word => word).length;
 
   return (
@@ -124,8 +156,13 @@ export default function chatbot() {
                  className='color-box' style={{ backgroundColor: '#33475B' }}></div>
               </div>
               <div className='box-inpt'>
-                <div className='color-box1' style={{ backgroundColor: '#F9F9F9' }}></div>
-                <input className='inpt-1' type="text" defaultValue={chatbotStyle.headerColor || ""} />
+                <div className='color-box1' style={{ backgroundColor: chatbotStyle.headerColor }}></div>
+                <input 
+                  className='inpt-1' 
+                  type="text" 
+                  defaultValue={chatbotStyle.headerColor || ""} 
+                  onChange={(e) => setChatbotStyle(prev => ({ ...prev, headerColor: e.target.value }))}
+                />
               </div>
             </div>
             <div className='background style-box'>
@@ -139,15 +176,21 @@ export default function chatbot() {
                  className='color-box' style={{ backgroundColor: '#EEEEEE' }}></div>
               </div>
               <div className='box-inpt'>
-                <div className='color-box1' style={{ backgroundColor: '#F9F9F9' }}></div>
-                <input className='inpt-1' type="text" defaultValue={chatbotStyle.backgroundColor || "" } />
+                <div className='color-box1' style={{ backgroundColor: chatbotStyle.backgroundColor }}></div>
+                <input 
+                  className='inpt-1' 
+                  type="text" 
+                  defaultValue={chatbotStyle.backgroundColor || "" } 
+                  onChange={(e) => setChatbotStyle(prev => ({ ...prev, backgroundColor: e.target.value }))}
+                />
               </div>
             </div>
             <div className='chat-mesg-1 style-box'>
               <p>Customize Message</p>
                 <div className='inpt-icon'>
                   <input className='inpt-1' type="text" 
-                  disabled={!editable.input1} defaultValue={chatbotStyle.customizedText.first }
+                  disabled={!editable.input1} 
+                  value={chatbotStyle.customizedText.first || ""}
                   onChange={(e) =>
                     setChatbotStyle(prev => ({
                       ...prev,
@@ -159,8 +202,10 @@ export default function chatbot() {
                   }/>
                   <Pencil onClick={() => setEditable(prev => ({ ...prev, input1: !prev.input1 }))} size={13} />
                 </div>
-                <div className='inpt-icon'><input className='inpt-1' type="text" 
-                  disabled={!editable.input2} defaultValue={chatbotStyle.customizedText.second } 
+                <div className='inpt-icon'>
+                  <input className='inpt-1' type="text" 
+                  disabled={!editable.input2} 
+                  value={chatbotStyle.customizedText.second || ""} 
                   onChange={(e) =>
                     setChatbotStyle(prev => ({
                       ...prev,
@@ -171,23 +216,32 @@ export default function chatbot() {
                     }))
                   }/>
                   <Pencil onClick={() => setEditable(prev => ({ ...prev, input2: !prev.input2 }))} size={13} />
-                  </div>
+                </div>
             </div>
-            <div action="" className='intro-form style-box'>
+            <div className='intro-form style-box'>
               <p>Introduction Form</p>
               <label htmlFor="name">Your name</label>
-              <input className='inp21' type="text" id="name" defaultValue={chatbotStyle.introFields.yourName || ""} 
-              onChange={(e) =>
-                setChatbotStyle(prev => ({
-                  ...prev,
-                  introFields: {
-                    ...prev.introFields,
-                    yourName: e.target.value
-                  }
-                }))
-              }/>  
+              <input 
+                className='inp21' 
+                type="text" 
+                id="name" 
+                value={chatbotStyle.introFields.yourName || ""} 
+                onChange={(e) =>
+                  setChatbotStyle(prev => ({
+                    ...prev,
+                    introFields: {
+                      ...prev.introFields,
+                      yourName: e.target.value
+                    }
+                  }))
+                }
+              />  
               <label htmlFor="phone">Your phone</label> 
-              <input className='inp21' type="text" id="phone" defaultValue={chatbotStyle.introFields.yourPhone || ""} 
+              <input 
+                className='inp21' 
+                type="text" 
+                id="phone" 
+                value={chatbotStyle.introFields.yourPhone || ""} 
                 onChange={(e) =>
                   setChatbotStyle(prev => ({
                     ...prev,
@@ -196,9 +250,14 @@ export default function chatbot() {
                       yourPhone: e.target.value
                     }
                   }))
-                }/> 
-              <label htmlFor="email">Your email</label>  {/* Added label text for email */}
-              <input className='inp21' type="text" id="email" defaultValue={chatbotStyle.introFields.yourEmail || ""} 
+                }
+              /> 
+              <label htmlFor="email">Your email</label>
+              <input 
+                className='inp21' 
+                type="text" 
+                id="email" 
+                value={chatbotStyle.introFields.yourEmail || ""} 
                 onChange={(e) =>
                   setChatbotStyle(prev => ({
                     ...prev,
@@ -207,7 +266,8 @@ export default function chatbot() {
                       yourEmail: e.target.value
                     }
                   }))
-                }/>  
+                }
+              />  
               <button>Thank You!</button>
             </div>
             <div className='wel-msg style-box'>
@@ -218,7 +278,6 @@ export default function chatbot() {
                 value={chatbotStyle.welcomeText || ""}
                 onChange={handleChange}
                 disabled={!editable.textarea}
-                
               />
               <div className='word-count' style={{ textAlign: 'right', fontSize: '12px', color: wordCount >= wordLimit ? 'red' : 'gray' }}>
                 {wordCount}/{wordLimit}
@@ -230,10 +289,8 @@ export default function chatbot() {
               )}
               <div className='pen-1'>
                 <Pencil onClick={() => setEditable(prev => ({ ...prev, textarea: !prev.textarea }))} size={13} />
-                </div>
+              </div>
             </div>
-    
-    
             <div className="time-picker-container">
               
             </div>
