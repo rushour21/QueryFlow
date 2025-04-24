@@ -160,8 +160,8 @@ export default function chatbot() {
                 <input 
                   className='inpt-1' 
                   type="text" 
-                  defaultValue={chatbotStyle.headerColor || ""} 
-                  onChange={(e) => setChatbotStyle(prev => ({ ...prev, headerColor: e.target.value }))}
+                  Value={chatbotStyle.headerColor || ""} 
+                  disabled
                 />
               </div>
             </div>
@@ -180,8 +180,8 @@ export default function chatbot() {
                 <input 
                   className='inpt-1' 
                   type="text" 
-                  defaultValue={chatbotStyle.backgroundColor || "" } 
-                  onChange={(e) => setChatbotStyle(prev => ({ ...prev, backgroundColor: e.target.value }))}
+                  Value={chatbotStyle.backgroundColor || "" } 
+                  disabled
                 />
               </div>
             </div>
