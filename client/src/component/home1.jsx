@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { PiShoppingBagBold   } from "react-icons/pi";
 import { CiSearch } from "react-icons/ci";
 import "../styles/home1.css"
+import axios from 'axios';
 
 export default function home1() {
   const [searchQuery, setSearchQuery] = useState('');
+ 
   return (
     <div className='dashboard'>
       <div className='dash-header'>

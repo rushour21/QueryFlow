@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Mail, Linkedin, Twitter, Youtube, Instagram, GithubIcon, Figma, Send, Play, ArrowRight, CircleCheck, X  } from 'lucide-react';
 import { BiSolidChat } from "react-icons/bi";
 import Logo from "../assets/full.png"
@@ -12,12 +12,12 @@ import Ai from "../assets/Ai.png"
 import Icn from "../assets/icn.png"
 import BoxImg from "../assets/box-img.png"
 import Ellipse from "../assets/Ellipse 6.png"
-
+import ChatbotWindow from '../component/chatbotWindow';
 
 import "../styles/home.css"
+import axios from 'axios';
 
-import { NavLink } from 'react-router-dom'
-import chatbot from '../component/chatbot';
+
 
 export default function home() {
   const [chatopen, setChatopen] = useState(false)
@@ -28,6 +28,22 @@ export default function home() {
     setChatopen(!chatopen)
     setMsgopen(false)
   }
+
+   const [chatbotStyle, setChatbotStyle] = useState();
+  
+    useEffect (() => {
+      const fetchstyle = async ()=> {
+          try {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/chatbot/getstyle`,)
+            setChatbotStyle(response.data.style);
+            console.log(response.data.style);
+          } catch (error) {
+            console.error("Error fetching style:", error);
+          }
+      }
+      fetchstyle();
+    },[])
+
   return (
     <div className='landing-page'>
       <div className='head-ll'>
@@ -55,20 +71,9 @@ export default function home() {
         </div>
       </div>
       
-      {chatopen && <div className='chat-bot'>
-        <div className='header-chat' style={{}}>
-          <img className='ell' src={Ellipse} alt="" />
-          <p>Hubly</p>
-        </div>
-        <div className='msg-chat' style={{}}>
-        </div>
-        <div className='footer-chat'>
-            <textarea name="" id="" placeholder='Write a message'></textarea>
-            <div className='send'><Send size={18}/></div>
-        </div>
-      </div>}
+      {chatopen && <ChatbotWindow chatbotStyle= {chatbotStyle} />}
 
-      {msgopen && <div className='msg-box'>
+      {msgopen && !chatopen && <div className='msg-box'>
       <div className='popup-l'>
         <img src={Ellipse} alt="" />
         <div className='popup-con1'>
@@ -86,11 +91,11 @@ export default function home() {
       
       <div className='c-names'>
         <img src={Ad} />
-        <img src={Ai}  />
-        <img src={El}  />
-        <img src={Op}  />
-        <img src={El}  />
-        <img src={Ai}  />
+        <img src={Ai} />
+        <img src={El} />
+        <img src={Op} />
+        <img src={El} />
+        <img src={Ai} />
       </div>
       <div className='hero-1'>
         <div className='hero-1-t'>
