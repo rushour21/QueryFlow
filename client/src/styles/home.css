@@ -269,7 +269,7 @@
 }
 .chat-bot{
     width: 320px;
-    height: 420px;
+    height: 440px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     border-radius: 15px;
     position: fixed;
@@ -301,15 +301,16 @@
     height: 300px;
     display: flex;
     flex-direction: column;
-    justify-content:end;
+    justify-content: flex-start;
     gap: 5px;
     padding: 5px;
     flex-grow: 1; /* Take the available space */
-  overflow-y: scroll; /* Enable scrolling */ /* Make sure scrolling works */
+   overflow-y: auto; /* Enable scrolling */ /* Make sure scrolling works */
+   scrollbar-width: none;
     
 }
 .covr{
-    color: #384f72;
+    color: #384f72; 
     width: 70%;
     margin: 0 auto;
     text-align: center;
@@ -322,11 +323,13 @@
     justify-content: space-between;
     align-items:center;
     flex: 1;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 .footer-chat >textarea{
     margin-left: 20px;
     height: 50px;
-    width: 92%;
+    width: 70%;
     border: none;
     background-color: transparent;
     resize: none;
@@ -335,11 +338,6 @@
 .footer-chat >textarea:focus{
     outline: none;
     
-}
-.footer-chat >div{
-    margin-right: 20px;
-    display: flex;
-    align-items:end;
 }
 .chat-form{
     width: 70%;
@@ -387,4 +385,24 @@
     font-size: 12px;
     margin-left: auto;
     margin-right: 5px;
+}
+.userMsg{
+    padding: 5px;
+    width: fit-content;
+    max-width: 70%;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    font-size: 12px;
+    overflow-wrap: break-word;
+}
+.send{
+    cursor: pointer;
+    border: 1px solid #aeaeae;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
 }

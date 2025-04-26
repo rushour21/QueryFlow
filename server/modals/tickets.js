@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { type } from "os";
 
 const querySchema = new mongoose.Schema({
     userDetails: {
@@ -16,7 +17,12 @@ const querySchema = new mongoose.Schema({
         },
       },
       initialMessage: {
-        type: String,
+        sender:{
+          type: String,
+        },
+        text:{
+          type: String,
+        }
       },
       messages: [
         {

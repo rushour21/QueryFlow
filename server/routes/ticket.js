@@ -10,21 +10,9 @@ const router = express.Router();
 router.post("/create", async (req, res) => {
     try {
         console.log(req.body)
-        const { name, phone, email, initialMessage} = req.body
-        if (!name || !phone || !email) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
+        const { details, initialMessage} = req.body
         const newTicket = new Tickets({
-           userDetails: {
-                name: name,
-                phone: phone,
-                email: email,
-            },
-            messages: [{
-                sender: "user",
-                text: initialMessage,
-                timestamp: new Date(),
-            }],
+           userDetails: details,
             status: "Pending",
             initialMessage: initialMessage,
         });
@@ -41,6 +29,7 @@ router.put("/usermessage/:ticketId", async (req, res) => {
     try {
         const { ticketId } = req.params;
         const { message } = req.body;
+        console.log(message)
         if (!message) {
             return res.status(400).json({ message: "Message is required" });
         }
@@ -151,12 +140,12 @@ router.get("/unresolved", authMiddleware, errorLogger, async (req, res) => {
     }
 });
 
-router.get("/allchats/:ticketId", authMiddleware, errorLogger, async (req, res) => {
+router.get("/allchats/:ticketId", async (req, res) => {
     try {
         const { ticketId } = req.params;
-        const allChats = await Tickets.find({ _id: ticketId }).select("userDetails ticketNo status messages");
-        
-        return res.status(200).json({ chats: allChats });
+        const allChats = await Tickets.findOne({ _id: ticketId }).select("userDetails messages initialMessage");
+        console.log(ticketId)
+        return res.status(200).json({allChats });
     } catch (error) {
         
         console.error("Error fetching chats:", error);

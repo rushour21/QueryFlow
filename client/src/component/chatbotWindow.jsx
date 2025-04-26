@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {Phone, Send} from 'lucide-react';
 import Ellipse from "../assets/Ellipse 6.png"
-
-
+import axios from 'axios';
 
 
 export default function chatbotWindow({chatbotStyle}) {
@@ -22,35 +21,102 @@ export default function chatbotWindow({chatbotStyle}) {
     })
     console.log(details)
 
+    useEffect(() => {
+        console.log("useEffect ran");
+        const fetchdetails = async () => {
+            const ticketId = localStorage.getItem("ticketId");
+            console.log("ticketId fetched:", ticketId);
+            if (!ticketId) return; // Exit early if no ticketId
+    
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/tickets/allchats/${ticketId}`);
+                console.log("Response from API:", response.data);
+                if (response.status === 200) {
+                    // Handle the response
+                    console.log("Fetched messages:", response.data);
+                    const res = response.data.allChats
+                    console.log(res)
+                    setInitialMessage(res.initialMessage)
+                    setDetails(res.userDetails)
+                    setMessages(res.messages)
+                    setUserCreated(true)
+                }
+            } catch (error) {
+                console.log("Error during API call:", error);
+            }
+        };
+        fetchdetails();
+    }, []);
+    
+
     console.log(chatbotStyle)
-    const handleconversation = () =>{
+    const handleconversation =  async () =>{
         if (!inputMessage.trim()) return;
         setConversationStarted(true)
         if(messages.length === 0 && !initialMessage.text){
-            setInitialMessage({text:inputMessage})
+            setInitialMessage({...initialMessage,text:inputMessage})
         }
         if(initialMessage.text && userCreated){
             setMessages([...messages,{sender:"user", text:inputMessage} ])
+            try {
+                const ticketId = localStorage.getItem("ticketId")
+                const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/tickets/usermessage/${ticketId}`,{
+                    message: inputMessage
+                })
+            } catch (error) {
+                console.log("can't save messages ", error)
+            }
         }
         setInputMessage("");
     }
     console.log(messages)
-    const handleFormSubmit = (e) => {
+    
+    const handleFormSubmit = async(e) => {
         e.preventDefault();
-        if (details.name && details.phone && details.email) {
+        if (details.name && details.phone && details.email && !userCreated) {
+            try {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/tickets/create/`,{
+                    details,
+                    initialMessage
+                })
+                if(response.status === 201){
+                    const ticketId = response.data.ticket;
+                    localStorage.setItem("ticketId", ticketId);
+                    console.log("user:", response.data)
+                    alert('ticket created')
+                 };
+            } catch (error) {
+                console.error("Error creating ticket:", error);
+                alert("Failed to create ticket. Please try again later.");
+            }
             // After the user fills out the form, update the state to reflect that the user is created
             setUserCreated(true);
         }
     };
+
+    const msgChatRef = useRef(null);
+
+    useEffect(() => {
+        if (msgChatRef.current) {
+            msgChatRef.current.scrollTop = msgChatRef.current.scrollHeight;
+        }
+        msgChatRef.current.scrollTo({
+            top: msgChatRef.current.scrollHeight,
+            behavior: "smooth"
+        });
+        
+    }, [messages, initialMessage]);
+
+    
   return (
     <div className='chat-bot'>
         <div className='header-chat' style={{backgroundColor:chatbotStyle.headerColor}}>
           <img className='ell' src={Ellipse} alt="" />
           <p>Hubly</p>
         </div>
-        <div className='msg-chat' style={{backgroundColor:chatbotStyle.backgroundColor}}>
+        <div className='msg-chat' style={{backgroundColor:chatbotStyle.backgroundColor}} ref={msgChatRef}>
 
-            {!conversationStarted && <p className='covr'>Start a conversion</p>}
+            {!conversationStarted && !initialMessage.text && <p className='covr'>Start a conversion</p>}
             {initialMessage.text &&<p className='initial'>{initialMessage.text}</p>}
             {initialMessage.text &&<form className='chat-form' onSubmit={handleFormSubmit}>
                 <p>Introduction Form</p>
@@ -92,7 +158,7 @@ export default function chatbotWindow({chatbotStyle}) {
 
             {messages.length >0 && initialMessage.text &&
                 messages.map((message, index) => (
-                    <p key={index}
+                    <p className='userMsg' key={index}
                     style={{marginRight: message.sender === "user" ? "5px" : "auto"
                             , marginLeft:message.sender === "user" ?"auto" : "5px"}}
                     >{message.text}</p>
