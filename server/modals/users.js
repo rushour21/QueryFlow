@@ -30,7 +30,7 @@ const users = new mongoose.Schema({
     },
     designation: {
         type: String,
-        enum: ['admin', 'member'],
+        enum: ['admin', 'member', "admin1"],
         required: true
     },
     createdAt: {

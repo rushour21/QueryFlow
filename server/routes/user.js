@@ -160,9 +160,8 @@ router.get("/getuser", authMiddleware, async (req, res) => {
                 }
             });
         }
-
         res.status(200).json({ user: existingUser });
-        co
+        
     } catch (err) {
         errorLogger(err, req, res);
     }

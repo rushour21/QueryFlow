@@ -54,6 +54,7 @@ router.put("/adminmessage/:ticketId", async (req, res) => {
     try {
         const { ticketId } = req.params;
         const { message } = req.body;
+        console.log(message)
         if (!message) {
             return res.status(400).json({ message: "Message is required" });
         }
@@ -162,5 +163,42 @@ router.get("/getallTickets", authMiddleware, errorLogger, async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 })
+
+router.put("/status/:ticketId", authMiddleware, async (req,res) => {
+    try {
+        const { ticketId } = req.params;
+        const { status } = req.body;
+        console.log(status);
+        console.log(ticketId);
+        const ticket = await Tickets.findOneAndUpdate(
+            {_id : ticketId },
+             {status:status},
+             { new: true } 
+            )
+        console.log(ticket);
+        if (!ticket) return res.status(404).json({ message: "Ticket not found" });
+        res.status(200).json({ message: "Status updated successfully", ticket });
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error });
+    }
+})
+
+router.put("/assign/:ticketId",authMiddleware, async(req,res) =>{
+    try {
+        const { ticketId } = req.params;
+        const { assigningMember } = req.body;
+        console.log(assigningMember);
+        console.log(ticketId);
+        const ticket = await Tickets.findOneAndUpdate(
+            {_id : ticketId },
+             {assignedTo:assigningMember},
+             { new: true }
+        )
+        console.log(ticket)
+        res.status(200).json({ message: "assigned successfully", ticket });
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error });
+    }
+} )
 
 export default router

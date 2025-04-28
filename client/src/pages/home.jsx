@@ -16,12 +16,12 @@ import ChatbotWindow from '../component/chatbotWindow';
 
 import "../styles/home.css"
 import axios from 'axios';
-
-
+import { useNavigate } from 'react-router-dom';
 
 export default function home() {
   const [chatopen, setChatopen] = useState(false)
   const [msgopen, setMsgopen] = useState(false)
+  const navigate = useNavigate();
   console.log(msgopen)
 
   const handlebot = ()=>{
@@ -49,8 +49,8 @@ export default function home() {
       <div className='head-ll'>
         <img src={Logo} />
         <div className='head-but'>
-          <button className='lo'>Login</button>
-          <button className='sig'>Sign Up</button>
+          <button className='lo' onClick={() => navigate('/login')}>Login</button>
+          <button className='sig' onClick={() => navigate('/register')}>Sign Up</button>
         </div>
       </div>
       <div className='hero'> 
@@ -87,7 +87,7 @@ export default function home() {
       onMouseEnter={() => setMsgopen(true)}  
       onMouseLeave={() => setMsgopen(false)}
       onClick={handlebot}  
-      className='chat-icon'><BiSolidChat color='white' size={25}/></div>
+      className='chat-icon'>{!chatopen ? <BiSolidChat color='white' size={25}/> : <X color='white' size={25}/> }</div>
       
       <div className='c-names'>
         <img src={Ad} />

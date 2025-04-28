@@ -53,6 +53,8 @@
 .chat-section{
     height: 100vh;
     width: 40%;
+    display: flex;
+    flex-direction: column;
 }
 .header_c{
     width: 90%;
@@ -70,11 +72,18 @@
 }
 .chat-box{
     width: 100%;
-    height: 75%;
+    max-height: 75%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: flex-end;
+    overflow-y: auto; /* Enable scrolling */ /* Make sure scrolling works */
+   scrollbar-width: none;
+    
 }
 .input-field{
-    margin-left: auto;
-    margin-right: auto;
+    margin: 10px auto;
     width: 95%;
     height: 85px;
     position: relative;
@@ -86,7 +95,10 @@
     border-radius: 5px;
     font-size: 16px;
     color: #86898C;
-
+    resize: none;
+}
+.input-field >textarea:focus{
+    outline: none;
 }
 .send{
     width: 25px;
@@ -198,4 +210,67 @@
     border: 1px solid #808080;
     border-radius: 5px;
     padding-left: 5px;
+}
+.chat-msg-cc{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.u-name{
+    color: #5E9BD5;
+    font-size: 14px;
+}
+.u-text{
+    color: #6A6B70;
+    font-size: 13px;
+}
+.popup{
+    width: 100%;
+    height: 80px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.popup-buttons{
+    display: flex;
+    justify-content: right;
+    gap: 5px;
+}
+.popup-buttons >button{
+    width: 100px;
+    height: 25px;
+    border-radius: 10px;
+    border: 0;
+}
+.chat-section>p{
+    font-size: 13px;
+    color: #6A6B70;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: auto;
+}
+.tic-time{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 25px;
+    width: 100%;
+    gap: 5px;
+    color: #6A6B70;
+}
+.flex-hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    width: 165px;
+  }
+.hr-div{
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
 }

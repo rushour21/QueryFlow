@@ -115,53 +115,56 @@ export default function chatbotWindow({chatbotStyle}) {
           <p>Hubly</p>
         </div>
         <div className='msg-chat' style={{backgroundColor:chatbotStyle.backgroundColor}} ref={msgChatRef}>
-
+            
             {!conversationStarted && !initialMessage.text && <p className='covr'>Start a conversion</p>}
             {initialMessage.text &&<p className='initial'>{initialMessage.text}</p>}
-            {initialMessage.text &&<form className='chat-form' onSubmit={handleFormSubmit}>
-                <p>Introduction Form</p>
+            {initialMessage.text && <div style={{display: "flex" }}>
+                <img className='bot-icon' style={{width:"30px", height:"30px"}} src={Ellipse} />
+                <form className='chat-form' onSubmit={handleFormSubmit}>
+                    <p>Introduction Form</p>
 
-                <label htmlFor="name">Your name</label>
-                <input 
-                    className='form-inp' 
-                    type="text" 
-                    id="name" 
-                    value={details.name}
-                    onChange={(e) => setDetails({ ...details, name: e.target.value })}
-                    placeholder={chatbotStyle.introFields.yourName}
-                />  
+                    <label htmlFor="name">Your name</label>
+                    <input 
+                        className='form-inp' 
+                        type="text" 
+                        id="name" 
+                        value={details.name}
+                        onChange={(e) => setDetails({ ...details, name: e.target.value })}
+                        placeholder={chatbotStyle.introFields.yourName}
+                    />  
 
-                <label htmlFor="phone">Your phone</label> 
-                <input 
-                    className='form-inp' 
-                    type="text" 
-                    id="phone" 
-                    value={details.phone}
-                    onChange={(e) => setDetails({ ...details, phone: e.target.value })}
-                    placeholder={chatbotStyle.introFields.yourPhone}
-                /> 
+                    <label htmlFor="phone">Your phone</label> 
+                    <input 
+                        className='form-inp' 
+                        type="text" 
+                        id="phone" 
+                        value={details.phone}
+                        onChange={(e) => setDetails({ ...details, phone: e.target.value })}
+                        placeholder={chatbotStyle.introFields.yourPhone}
+                    /> 
 
-                <label htmlFor="email">Your email</label>
-                <input 
-                    className='form-inp' 
-                    type="text" 
-                    id="email"
-                    value={details.email} 
-                    onChange={(e) => setDetails({ ...details, email: e.target.value })}
-                    placeholder={chatbotStyle.introFields.yourEmail}
-                />  
+                    <label htmlFor="email">Your email</label>
+                    <input 
+                        className='form-inp' 
+                        type="text" 
+                        id="email"
+                        value={details.email} 
+                        onChange={(e) => setDetails({ ...details, email: e.target.value })}
+                        placeholder={chatbotStyle.introFields.yourEmail}
+                    />  
 
-                <button className='ty-1' style={{backgroundColor: userCreated ? "#848484" : "#184E7F"}}>Thank You!</button>
-            </form>}
+                    <button className='ty-1' style={{backgroundColor: userCreated ? "#848484" : "#184E7F"}}>Thank You!</button>
+            </form></div>}
             {userCreated && <p className='custom'>{chatbotStyle.customizedText.first}</p>}
             {userCreated && <p className='custom'>{chatbotStyle.customizedText.second}</p>}
 
             {messages.length >0 && initialMessage.text &&
                 messages.map((message, index) => (
-                    <p className='userMsg' key={index}
-                    style={{marginRight: message.sender === "user" ? "5px" : "auto"
-                            , marginLeft:message.sender === "user" ?"auto" : "5px"}}
-                    >{message.text}</p>
+                    <div className='img-msg11' style={{marginRight: message.sender === "user" ? "5px" : "auto"
+                        , marginLeft:message.sender === "user" ?"auto" : "5px"}}>
+                        {message.sender === "admin" && <img className='bot-icon' style={{width:"30px", height:"30px"}} src={Ellipse} />}
+                        <p className='userMsg' key={index}>{message.text}</p>
+                    </div>
                 ))
             }
         </div>
