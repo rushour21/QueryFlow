@@ -247,7 +247,8 @@ export default function ContactCenter() {
           </div>
         </div></>}
         
-         {(selectedTicket && selectedTicket.status !== "Pending" && selectedTicket.assignedTo === user._id) && <p >This chat has been resolved </p>}
+         {(selectedTicket && selectedTicket.status === "Resolved" && selectedTicket.assignedTo === user._id) && <p >This chat has been resolved </p>}
+         {(selectedTicket && selectedTicket.status === "Unresolved" && selectedTicket.assignedTo === user._id) && <p >This chat has been unresolved </p>}
           {(selectedTicket && selectedTicket.assignedTo !== user._id)&&<p>This chat is assigned to new team member. you no longer have access </p>}
       
       </div>
