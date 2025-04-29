@@ -45,6 +45,7 @@ export default function home() {
     },[])
 
   return (
+    <>
     <div className='landing-page'>
       <div className='head-ll'>
         <img src={Logo} />
@@ -215,5 +216,6 @@ export default function home() {
         </div>
       </div>
     </div>
+    </>
   )
 }

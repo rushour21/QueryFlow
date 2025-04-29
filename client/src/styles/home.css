@@ -416,3 +416,12 @@
 .det-t{
     display: flex;
 }
+
+@media (max-width: 768px) {
+    .head-ll, .hero, .hero-r, .c-names, .hero-1, .hero-2, .hero-3, .footer-l{
+        display: none;
+    }
+    .chat-bot{
+        width: 95vw;
+    }
+  }
