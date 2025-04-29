@@ -1,0 +1,18 @@
+.analytics h2{
+    color:#3E98C7;
+    font-size: 18px;
+}
+.analytics p{
+    font-size: 13px;
+    width: 650px;
+}
+.chart{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 65%;
+    margin-bottom: 10px;
+}
+.analytics{
+    margin-left: 25px;
+}

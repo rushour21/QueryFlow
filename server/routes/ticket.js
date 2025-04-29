@@ -201,4 +201,90 @@ router.put("/assign/:ticketId",authMiddleware, async(req,res) =>{
     }
 } )
 
+router.get("/analysis", authMiddleware, async (req, res) => {
+    try {
+      // Get user ID from request
+      const userId = req.user.id;
+      console.log(userId)
+      
+      // Get tickets assigned to this user
+      const userTickets = await Tickets.find({ assignedTo: userId });
+  
+      // Count total and resolved tickets for this user
+      const totalTickets = userTickets.length;
+      const resolvedTickets = await Tickets.countDocuments({ 
+        assignedTo: userId,
+        status: "Resolved" 
+      });
+  
+      // Calculate resolved percentage
+      const resolvedPercentage = totalTickets > 0 
+        ? (resolvedTickets / totalTickets) * 100 
+        : 0;
+  
+      // Calculate average response time and track missed chats
+      let totalResponseTime = 0;
+      let countedTickets = 0;
+      const missedChats = [];
+      const oneHourInMs = 60 * 60 * 1000; // 1 hour in milliseconds
+      const currentTime = new Date();
+  
+      for (const ticket of userTickets) {
+        const initialTime = new Date(ticket.createdAt);
+        const adminMessage = ticket.messages.find(msg => msg.sender === "admin");
+  
+        if (adminMessage) {
+          const adminTime = new Date(adminMessage.timestamp);
+          const responseTime = adminTime - initialTime;
+          
+          totalResponseTime += responseTime;
+          countedTickets++;
+          
+          // Check if response time is more than an hour
+          if (responseTime > oneHourInMs) {
+            missedChats.push({
+              ticketId: ticket._id,
+              createdAt: ticket.createdAt,
+              responseTimeMinutes: (responseTime / (1000 * 60)).toFixed(2),
+              hasResponse: true
+            });
+          }
+        } else {
+          // No admin response - calculate time since creation
+          const timeSinceCreation = currentTime - initialTime;
+          
+          // If it's been more than an hour with no response, consider it missed
+          if (timeSinceCreation > oneHourInMs) {
+            missedChats.push({
+              ticketId: ticket._id,
+              createdAt: ticket.createdAt,
+              timeWithoutResponseMinutes: (timeSinceCreation / (1000 * 60)).toFixed(2),
+              hasResponse: false
+            });
+          }
+        }
+      }
+  
+      const averageResponseTimeMinutes = countedTickets > 0
+        ? totalResponseTime / countedTickets / (1000 * 60)
+        : 0;
+  
+      // Send JSON response
+      return res.status(200).json({
+        totalTickets,
+        resolvedTickets,
+        resolvedPercentage: resolvedPercentage.toFixed(2),
+        averageResponseTimeMinutes: averageResponseTimeMinutes.toFixed(2),
+        missedChats: {
+          count: missedChats.length,
+          tickets: missedChats
+        }
+      });
+  
+    } catch (error) {
+      console.error("Error in /analysis route:", error);
+      return res.status(500).json({ error: "Server error while generating analysis." });
+    }
+  });
+
 export default router

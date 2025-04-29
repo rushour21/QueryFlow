@@ -31,7 +31,7 @@ router.post("/addmember", authMiddleware,  async (req, res) => {
     }
 })
 
-router.get("/addedmembers", authMiddleware, async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
     try {
         const members =  await Users.find({ createdBy: req.user.id }).select("userName email designation phone");
         if (!members) {
@@ -44,6 +44,28 @@ router.get("/addedmembers", authMiddleware, async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 })
+router.get("/addedmembers", authMiddleware, async (req, res) => {
+    try {
+      if (!req.user?.id) return res.status(401).json({ message: "Unauthorized" });
+  
+      let members = await Users.find({ createdBy: req.user.id }).select("userName email designation phone").lean();
+      
+      if (members.length === 0) {
+        const creator = await Users.findById(req.user.id).select("createdBy").lean();
+        if (creator?.createdBy) {
+          members = await Users.find({ createdBy: creator.createdBy }).select("userName email designation phone").lean();
+        }
+      }
+  
+      return members.length 
+        ? res.status(200).json({ success: true, members }) 
+        : res.status(404).json({ success: false, message: "No members found" });
+        
+    } catch (error) {
+      errorLogger(error);
+      return res.status(500).json({ success: false, message: "Server error" });
+    }
+  });
 
 router.delete("/delete/:_Id", authMiddleware, async (req, res) => {
     try {

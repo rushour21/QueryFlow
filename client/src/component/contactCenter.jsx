@@ -116,7 +116,6 @@ export default function ContactCenter() {
       }
       setInputMsg('');
     };
-    console.log
     const handleStatusClick = (status) => {
       setDesiredStatus(status);
       setShowPopup(true);
@@ -249,7 +248,7 @@ export default function ContactCenter() {
         </div></>}
         
          {(selectedTicket && selectedTicket.status !== "Pending" && selectedTicket.assignedTo === user._id) && <p >This chat has been resolved </p>}
-          {(selectedTicket && selectedTicket.status !== "Pending" && selectedTicket.assignedTo !== user._id)&&<p>This chat is assigned to new team member. you no longer have access </p>}
+          {(selectedTicket && selectedTicket.assignedTo !== user._id)&&<p>This chat is assigned to new team member. you no longer have access </p>}
       
       </div>
 
@@ -278,7 +277,7 @@ export default function ContactCenter() {
                     <img src={icon2} alt="" />{member.userName || 'Unknown'}
                   </div>
                 ))}
-                {assignMemberPopup && selectedTicket.designation === "admin" &&  (
+                {assignMemberPopup && selectedTicket.assignedTo === user._id && user.designation === "admin" && selectedTicket?.status === "Pending" && (
                   <div className='popup'>
                     <p>Chat would be assigned to Different team member </p>
                     <div className='popup-buttons'>
@@ -302,7 +301,7 @@ export default function ContactCenter() {
                 <div className='option'onClick={() => handleStatusClick('Unresolved')}>Unresolved</div>
               </div>)
               }
-            {showPopup &&  selectedTicket.status === "pending" && <div className='popup'>
+            {showPopup &&  selectedTicket.status === "Pending" && <div className='popup'>
               <p>Chat will be closed</p>
               <div className='popup-buttons'>
                 <button style={{backgroundColor:"#aeaeae"}} onClick={() => setShowPopup(false)}>Cancel</button>

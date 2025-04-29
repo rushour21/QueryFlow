@@ -259,3 +259,8 @@
 .penn{
     cursor: pointer;
 }
+.send{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

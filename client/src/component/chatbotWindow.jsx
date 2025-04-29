@@ -84,13 +84,14 @@ export default function chatbotWindow({chatbotStyle}) {
                     localStorage.setItem("ticketId", ticketId);
                     console.log("user:", response.data)
                     alert('ticket created')
+                    setUserCreated(true);
                  };
             } catch (error) {
                 console.error("Error creating ticket:", error);
                 alert("Failed to create ticket. Please try again later.");
             }
             // After the user fills out the form, update the state to reflect that the user is created
-            setUserCreated(true);
+            
         }
     };
 
