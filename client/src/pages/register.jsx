@@ -82,7 +82,7 @@ export default function register() {
                         ...prev,
                         password : event.target.value
                     }
-                })} value={formData.password} type="text"/>
+                })} value={formData.password} type="password"/>
                 </label>
 
                 <label >Confirm Password
@@ -91,7 +91,7 @@ export default function register() {
                         ...prev,
                         confirmPassword : event.target.value
                     }
-                })} value={formData.confirmPassword} type="text" />
+                })} value={formData.confirmPassword} type="password" />
                 </label>
 
             <label id='checkboxx'>
