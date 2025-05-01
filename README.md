@@ -2,9 +2,9 @@
 
 **QueryFlow – Hubly** is a full-stack web-based support and query management system built to streamline team-based customer service operations. It empowers admins and support teams to manage queries efficiently with real-time chat, analytics, team collaboration, and chatbot customization 
 
-query-flow-eta.vercel.app
-
 ---
+
+https://query-flow-eta.vercel.app/
 
 ## 📌 Features Overview
 
