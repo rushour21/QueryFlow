@@ -417,11 +417,19 @@
     display: flex;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 720px) {
     .head-ll, .hero, .hero-r, .c-names, .hero-1, .hero-2, .hero-3, .footer-l{
         display: none;
     }
     .chat-bot{
         width: 95vw;
+        height: 75vh;
+    }
+    .chat-icon{
+        width: 65px;
+        height: 65px;
+    }
+    .landing-page{
+        max-height: 100vh;
     }
   }

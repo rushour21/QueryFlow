@@ -78,7 +78,7 @@ export default function home() {
       <div className='popup-l'>
         <img src={Ellipse} alt="" />
         <div className='popup-con1'>
-        <p>👋 Want to chat about Hubly? I'm an chatbot here to help you find your way.</p>
+        <p>{chatbotStyle.welcomeText}</p>
         <div className='cls'><X size={15}/></div>
         </div>
       </div>
