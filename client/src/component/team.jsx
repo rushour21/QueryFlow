@@ -11,13 +11,30 @@ export default function Team() {
   const [currentMember, setCurrentMember] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);
-
+ const [user, setUser] = useState();
   const [formData, setFormData] = useState({
     userName: '',
     phone: '',
     email: '',
     designation: '',
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    const getUser = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/getuser`, {
+          headers: { Authorization: token },
+        });
+
+        setUser(res.data.user);
+      } catch (error) {
+        console.error("Error fetching username:", error);
+      }
+    };
+
+    getUser();
+  }, []);
 
   const token = localStorage.getItem('authToken');
 
@@ -129,9 +146,9 @@ export default function Team() {
         ))}
       </div>
 
-      <button onClick={toggleOpen}>
+      {user?.designation === "admin" && <button onClick={toggleOpen}>
         <CirclePlus size={14} /> Add Team Members
-      </button>
+      </button>}
 
       {isOpen && <div className="overlay" onClick={toggleOpen}></div>}
 
