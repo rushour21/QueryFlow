@@ -432,4 +432,7 @@
     .landing-page{
         max-height: 100vh;
     }
+    .msg-chat{
+        height: 350px;
+    }
   }
