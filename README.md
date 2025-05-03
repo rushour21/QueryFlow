@@ -40,7 +40,7 @@ https://query-flow-eta.vercel.app/
 
 ### 🌐 Embedded Chatbot (Dummy chatbot)
 - The static bot is showcasing a customization in action.
-- Mobile responsive design with the chatbot always visible.
+
 
 ### ⏳ Missed Chat Timer
 - Queries are auto-tagged as “missed” if no response is recorded in a set timeframe.
