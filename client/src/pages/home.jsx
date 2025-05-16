@@ -42,7 +42,7 @@ export default function home() {
           }
       }
       fetchstyle();
-    },[])
+    },[]);
 
   return (
     <>
@@ -72,9 +72,9 @@ export default function home() {
         </div>
       </div>
       
-      {chatopen && <ChatbotWindow chatbotStyle= {chatbotStyle} />}
+      {chatopen && chatbotStyle && <ChatbotWindow chatbotStyle= {chatbotStyle} />}
 
-      {msgopen && !chatopen && <div className='msg-box'>
+      {msgopen && !chatopen && chatbotStyle && <div className='msg-box'>
       <div className='popup-l'>
         <img src={Ellipse} alt="" />
         <div className='popup-con1'>
