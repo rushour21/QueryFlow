@@ -96,16 +96,38 @@
     height: 60px;
     width: 200px;
 }
-.c-names{
-    background-color: #EBF1F9;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 100px;
+.c-names {
+  background-color: #EBF1F9;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
-.c-names>img{
-    height: 50px;
+
+.scroll {
+  display: flex;
+  gap: 20px;
+  white-space: nowrap;
+  animation: scrollLeft 20s linear infinite;
 }
+
+.scroll img {
+  height: 50px;
+  margin: 0 20px;
+  vertical-align: middle;
+}
+
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 .hero-1-t{
     text-align: center;
     margin-top: 50px;
@@ -227,7 +249,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: sticky;
+    position: fixed;
     top: 85vh;
     left: 95%;
     z-index: 10;

@@ -71,9 +71,25 @@ export default function home() {
           </div>
         </div>
       </div>
-      
-      {chatopen && chatbotStyle && <ChatbotWindow chatbotStyle= {chatbotStyle} />}
+      <div className='c-names'>
+        <div className="scroll">
+          <img src={Ad} />
+          <img src={Ai} />
+          <img src={El} />
+          <img src={Op} />
+          <img src={El} />
+          <img src={Ai} />
 
+          {/* Duplicate for seamless loop */}
+          <img src={Ad} />
+          <img src={Ai} />
+          <img src={El} />
+          <img src={Op} />
+          <img src={El} />
+          <img src={Ai} />
+        </div>
+      </div>
+      {chatopen && chatbotStyle && <ChatbotWindow chatbotStyle= {chatbotStyle} />}
       {msgopen && !chatopen && chatbotStyle && <div className='msg-box'>
       <div className='popup-l'>
         <img src={Ellipse} alt="" />
@@ -90,14 +106,6 @@ export default function home() {
       onClick={handlebot}  
       className='chat-icon'>{!chatopen ? <BiSolidChat color='white' size={25}/> : <X color='white' size={25}/> }</div>
       
-      <div className='c-names'>
-        <img src={Ad} />
-        <img src={Ai} />
-        <img src={El} />
-        <img src={Op} />
-        <img src={El} />
-        <img src={Ai} />
-      </div>
       <div className='hero-1'>
         <div className='hero-1-t'>
           <h2>At its core, Hubly is a robust CRM <br />solution.</h2>
