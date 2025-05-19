@@ -100,11 +100,11 @@ export default function home() {
       </div>
       </div>}
 
-      <div 
+      {chatbotStyle && <div 
       onMouseEnter={() => setMsgopen(true)}  
       onMouseLeave={() => setMsgopen(false)}
       onClick={handlebot}  
-      className='chat-icon'>{!chatopen ? <BiSolidChat color='white' size={25}/> : <X color='white' size={25}/> }</div>
+      className='chat-icon'>{!chatopen ? <BiSolidChat color='white' size={25}/> : <X color='white' size={25}/> }</div>}
       
       <div className='hero-1'>
         <div className='hero-1-t'>
